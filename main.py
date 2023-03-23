@@ -1,10 +1,11 @@
 import snscrape.modules.twitter as sntwitter
 import pandas as pd
 
-query = "peso weak dollar strong until:2022-12-31 since:2022-01-01 -filter:replies"
-tweets = []
-limits = 100
 
+tweets = []
+limits = 1000
+
+query = "peso weak dollar strong until:2022-12-31 since:2022-10-01 -filter:replies"
 for tweet in sntwitter.TwitterSearchScraper(query).get_items():
     if len(tweets) == limits:
         break
@@ -13,10 +14,30 @@ for tweet in sntwitter.TwitterSearchScraper(query).get_items():
     user = [getattr(tweet.user,i) for i in vars(tweet.user)]
     tweets.append(attr + user)
 
+
+query = "peso dollar sandro  until:2022-12-31 since:2022-10-01 -filter:replies"
+for tweet in sntwitter.TwitterSearchScraper(query).get_items():
+    if len(tweets) == limits:
+        break
+
+    attr2 = [getattr(tweet,i) for i in vars(tweet)]
+    user2 = [getattr(tweet.user,i) for i in vars(tweet.user)]
+    tweets.append(attr2 + user2)
+
 columns = [i for i in vars(tweet)] + [i for i in vars(tweet.user)]
 
+# for tweet in tweets:
+#     a = tweet[4]
+#     for tweet2 in tweets:
+#         if tweet[4] == a:
+#             tweets.remove(tweet2)
+#             print('removed')
+
+size = len(tweets)
+
+
 df = pd.DataFrame(tweets, columns=columns)
-df.to_csv('test1.csv', index=False)
+df.to_csv('raw.csv', index=False)
 
 
 
