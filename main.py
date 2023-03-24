@@ -26,17 +26,10 @@ for tweet in sntwitter.TwitterSearchScraper(query).get_items():
 
 columns = [i for i in vars(tweet)] + [i for i in vars(tweet.user)]
 
-# for tweet in tweets:
-#     a = tweet[4]
-#     for tweet2 in tweets:
-#         if tweet[4] == a:
-#             tweets.remove(tweet2)
-#             print('removed')
+result = []
+[result.append(tweet) for tweet in tweets if tweet not in result]
 
-size = len(tweets)
-
-
-df = pd.DataFrame(tweets, columns=columns)
+df = pd.DataFrame(result, columns=columns)
 df.to_csv('raw.csv', index=False)
 
 
